@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^completionBlock)(BOOL success);
+typedef void (^CompletionBlock)(BOOL success);
 
 
 @interface YJWaveButton : UIView{
@@ -25,11 +25,11 @@ typedef void (^completionBlock)(BOOL success);
 
 @property (nonatomic, weak) NSTimer * Ntimer;
 
-@property (nonatomic, copy) completionBlock block;
+@property (nonatomic, copy) CompletionBlock block;
 
--(instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame andTarget:(SEL)action andID:(id)sender;
+- (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image target:(SEL)target sender:(id)sender;
 
--(instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame onCompletion:(completionBlock)completionBlock;
+- (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image completion:(CompletionBlock)completionBlock;
 
 -(void)setRippleEffectWithColor:(UIColor *)color;
 -(void)setRippeEffectEnabled:(BOOL)setRippeEffectEnabled;

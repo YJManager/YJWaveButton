@@ -15,8 +15,6 @@
 
 @implementation YJWaveButton
 
-
-
 - (id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
@@ -25,56 +23,31 @@
     return self;
 }
 
--(void)commonInitWithImage:(UIImage *)image andFrame:(CGRect) frame{
-    
-    imageView = [[UIImageView alloc]initWithImage:image];
-    imageView.frame = CGRectMake(0, 0, frame.size.width - 5, frame.size.height - 5);
-    imageView.layer.borderColor = [UIColor clearColor].CGColor;
-    imageView.layer.borderWidth = 2;
-    imageView.clipsToBounds = YES;
-    imageView.layer.cornerRadius = imageView.frame.size.height / 2;
-    [self addSubview:imageView];
-    
-    imageView.center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-    self.layer.cornerRadius = self.frame.size.height / 2;
-    self.layer.borderWidth = 2;
-    self.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:0.9].CGColor;
-//    
-    gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTap:)];
-    [self addGestureRecognizer:gesture];
-    
-}
-
--(instancetype)initWithImage:(UIImage *)image
-                    andFrame:(CGRect)frame
-                   andTarget:(SEL)action
-                       andID:(id)sender {
+- (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image target:(SEL)target sender:(id)sender {
     self = [super initWithFrame:frame];
     
     if(self){
         // 定时器
         [NSTimer scheduledTimerWithTimeInterval:0.001f target:self selector:@selector(btnWaveActive) userInfo:nil repeats:NO];
         self.Ntimer =  [NSTimer scheduledTimerWithTimeInterval:2.5f target:self selector:@selector(btnWaveActive) userInfo:nil repeats:YES];
-        [self commonInitWithImage:image andFrame:frame];
-        methodName = action;
+        [self commonInitWithImage:image frame:frame];
+        methodName = target;
         superSender = sender;
     }
-    
- 
-
-    
     return self;
 }
 
--(instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame onCompletion:(completionBlock)completionBlock{
+- (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image completion:(CompletionBlock)completionBlock{
     self = [super initWithFrame:frame];
-    
     if(self){
         
-        [self commonInitWithImage:image andFrame:frame];
+        // 定时器
+        [NSTimer scheduledTimerWithTimeInterval:0.001f target:self selector:@selector(btnWaveActive) userInfo:nil repeats:NO];
+        self.Ntimer =  [NSTimer scheduledTimerWithTimeInterval:2.5f target:self selector:@selector(btnWaveActive) userInfo:nil repeats:YES];
+
+        [self commonInitWithImage:image frame:frame];
         self.block = completionBlock;
     }
-    
     return self;
 }
 
@@ -122,12 +95,9 @@
         animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
         [circleShape addAnimation:animation forKey:nil];
     }
-
 }
 
 -(void)handleTap:(id)sender{
-    
-    
     
     [UIView animateWithDuration:0.1 animations:^{
         imageView.alpha = 1;
@@ -146,17 +116,9 @@
                 _block(success);
             }
         }];
-        
     }];
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 - (void)setFirstWaveBtn{
     [self btnWaveActive];
 }
@@ -166,9 +128,31 @@
     self.Ntimer = nil;
 }
 
--(void)dealloc{
+- (void)dealloc{
     [self.Ntimer invalidate];
     self.Ntimer = nil;
 }
+
+#pragma mark - Support
+- (void)commonInitWithImage:(UIImage *)image frame:(CGRect) frame{
+    
+    imageView = [[UIImageView alloc]initWithImage:image];
+    imageView.frame = CGRectMake(0, 0, frame.size.width - 5, frame.size.height - 5);
+    imageView.layer.borderColor = [UIColor clearColor].CGColor;
+    imageView.layer.borderWidth = 2;
+    imageView.clipsToBounds = YES;
+    imageView.layer.cornerRadius = imageView.frame.size.height / 2;
+    [self addSubview:imageView];
+    
+    imageView.center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+    self.layer.cornerRadius = self.frame.size.height / 2;
+    self.layer.borderWidth = 2;
+    self.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:0.9].CGColor;
+    //
+    gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTap:)];
+    [self addGestureRecognizer:gesture];
+    
+}
+
 
 @end

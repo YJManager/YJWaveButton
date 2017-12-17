@@ -7,8 +7,11 @@
 //
 
 #import "ViewController.h"
+#import "YJWaveButton.h"
 
 @interface ViewController ()
+
+@property (nonatomic, strong) YJWaveButton *waveButton; /**< 按钮 */
 
 @end
 
@@ -16,9 +19,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    [self.view addSubview:self.waveButton];
+    [self.waveButton btnWaveActive];
 }
 
+
+#pragma mark - Lazy
+- (YJWaveButton *)waveButton{
+    if (!_waveButton) {
+        _waveButton = [[YJWaveButton alloc] initWithFrame:CGRectMake(100, 100, [UIScreen mainScreen].bounds.size.width - 200, [UIScreen mainScreen].bounds.size.width - 200) image:[UIImage imageNamed:@"button"] completion:^(BOOL success) {
+            NSLog(@"-->%d", success);
+        }];
+        [_waveButton setRippeEffectEnabled:YES];
+        [_waveButton setRippleEffectWithColor:[UIColor redColor]];
+    }
+    return _waveButton;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
